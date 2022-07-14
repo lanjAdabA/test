@@ -15,7 +15,7 @@ class PuzzleAlpha extends StatefulWidget {
 class _PuzzleAlphaState extends State<PuzzleAlpha> {
   final Map<String, bool> score = {};
 
-  final Map whole = {
+  final Map<String, dynamic> data = {
     "A": " 🍎 A-Apple",
     "B": " ⚽️ B-Ball",
     "C": " 🐈‍⬛ C-Car",
@@ -43,14 +43,39 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
     "Y": " 🪀 Y-Yoyo",
     "Z": " 🦓 Z-Zebra",
   };
-  // var random = whole[randomChoice(whole.keys)];
 
-  final Map choices = {};
+  void randomfunc() {
+    int i = 0;
+    List choices = [];
+
+    Random random = Random();
+    int randomNumber = random.nextInt(5);
+    print("$randomNumber");
+
+    data.forEach((key, value) {
+      if (i >= randomNumber) {
+        if (i < (randomNumber + 3)) {
+          choices.add("$key : $value");
+        }
+      }
+      i++;
+      print('"$key" : "$value"');
+    });
+
+    print("$choices");
+  }
 
   int seed = 0;
-
   @override
   Widget build(BuildContext context) {
+    // int i = 0;
+    // while (i <= 6) {
+    //   var rndKey = randomChoice(choices.keys);
+    //   choices[rndKey] = choices[rndKey];
+    // }
+
+    // var random = whole[randomChoice(whole.keys)];
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.refresh_outlined),
@@ -67,7 +92,7 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: choices.keys.map((emoji) {
+                children: data.keys.map((emoji) {
                   return Draggable<String>(
                     data: emoji,
                     feedback: Emoji(emoji: emoji),
@@ -80,10 +105,9 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: choices.keys
-                    .map((emoji) => _buildDragTarget(emoji))
-                    .toList()
-                  ..shuffle(Random(seed)),
+                children:
+                    data.keys.map((emoji) => _buildDragTarget(emoji)).toList()
+                      ..shuffle(Random(seed)),
               )
             ],
           ),
@@ -106,7 +130,7 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
             child: Row(children: [
               // Emoji(emoji: emoji),
               Text(
-                choices[emoji].toString(),
+                data[emoji].toString(),
                 style: const TextStyle(fontSize: 20, fontFamily: "anton"),
               ),
             ]),
