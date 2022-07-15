@@ -44,10 +44,10 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
     "Z": " 🦓 Z-Zebra",
   };
 
-  void randomfunc() {
-    int i = 0;
-    List choices = [];
+  int i = 0;
+  Map choices = {};
 
+  void randomfunc() {
     Random random = Random();
     int randomNumber = random.nextInt(5);
     print("$randomNumber");
@@ -55,7 +55,9 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
     data.forEach((key, value) {
       if (i >= randomNumber) {
         if (i < (randomNumber + 3)) {
-          choices.add("$key : $value");
+          choices.addEntries(choices.entries);
+          //                  children: choices.keys.map((emoji) {
+
         }
       }
       i++;
@@ -92,7 +94,7 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: data.keys.map((emoji) {
+                children: choices.keys.map((emoji) {
                   return Draggable<String>(
                     data: emoji,
                     feedback: Emoji(emoji: emoji),
@@ -105,9 +107,10 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    data.keys.map((emoji) => _buildDragTarget(emoji)).toList()
-                      ..shuffle(Random(seed)),
+                children: choices.keys
+                    .map((emoji) => _buildDragTarget(emoji))
+                    .toList()
+                  ..shuffle(Random(seed)),
               )
             ],
           ),
@@ -130,7 +133,7 @@ class _PuzzleAlphaState extends State<PuzzleAlpha> {
             child: Row(children: [
               // Emoji(emoji: emoji),
               Text(
-                data[emoji].toString(),
+                choices[emoji].toString(),
                 style: const TextStyle(fontSize: 20, fontFamily: "anton"),
               ),
             ]),
